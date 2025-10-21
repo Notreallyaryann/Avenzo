@@ -11,9 +11,15 @@ import Image from "next/image"
 import banner from '../../../../public/banner2.jpg'
 import logo from '../../../../public/logo1.png'
 import { protectSignInAction } from "@/actions/auth"
+import { useAuthStore } from "@/store/useAuthStore"
+import { useRouter } from "next/navigation";
+import { ArrowRight } from "lucide-react"
+
 
 const Registerpage = () => {
   const [formdata, setFromData] = useState({ name: '', email: '', password: '' })
+  const { register, isLoading } = useAuthStore();
+  const router = useRouter();
 
   const handleOnChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setFromData(prev => ({ ...prev, [event.target.name]: event.target.value }))
@@ -29,6 +35,9 @@ const Registerpage = () => {
     }
 
     toast.success("Account created successfully!")
+
+    const userId=await register(formdata.name,formdata.email,formdata.password)
+    if(userId) router.push('/auth/login')
   }
 
   return (
@@ -94,8 +103,16 @@ const Registerpage = () => {
               />
             </div>
 
-            <Button type='submit' className='w-full bg-black text-white hover:bg-black transition-colors'>
-              CREATE ACCOUNT
+            <Button type='submit' 
+            disabled={isLoading}
+            className='w-full bg-black text-white hover:bg-black transition-colors'>
+           {
+              isLoading? 'Creating Account...' : 
+              <>
+              CREATE ACCOUNT 
+              <ArrowRight className="w-4 h-4ml-2"/>
+              </>
+           }
             </Button>
 
             <p className="text-center text-[#3f3d56] text-sm">

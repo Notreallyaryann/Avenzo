@@ -9,13 +9,14 @@ dotenv.config()
 const app=express()
 const PORT=process.env.PORT || 3001
 
-const corsOptions={
-    origin:'http://localhost:3000',
-    Credentials:true,
-    methods:['GET','PUT','POST','DELETE','OPTIONS'],
-    allowedHeaders:['content-Type','Authorization'],
+const corsOptions = {
+  origin: 'http://localhost:3000',
+  credentials: true, 
+  methods: ['GET', 'PUT', 'POST', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
+};
 
-}
+app.use(cors(corsOptions));
 
 app.use(cors(corsOptions))
 app.use(express.json())
